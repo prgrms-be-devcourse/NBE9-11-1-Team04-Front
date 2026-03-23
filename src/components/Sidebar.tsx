@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { Tag, Star, Minus, Plus } from 'lucide-react';
-import { MenuItem } from '@/types/product';
+import { CartItem } from '@/types/product';
 
-export default function Sidebar({ items }: { items: MenuItem[] }) {
+export default function Sidebar({ items }: { items: CartItem[] }) {
   const [quantities, setQuantities] = useState<{ [key: number]: number }>(
     items.reduce((acc, item) => ({ ...acc, [item.id]: item.initialQuantity || 0 }), {})
   );

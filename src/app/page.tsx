@@ -1,6 +1,6 @@
 import ProductGrid from '@/components/ProductGrid';
 import Sidebar from '@/components/Sidebar';
-import { Product, MenuItem } from '@/types/product';
+import { Product, CartItem } from '@/types/product';
 
 async function getProducts(): Promise<Product[]> {
   // 백엔드 연결 전 테스트 데이터 (category 포함)
@@ -14,7 +14,7 @@ async function getProducts(): Promise<Product[]> {
   ];
 }
 
-async function getMenuItems(): Promise<MenuItem[]> {
+async function getMenuItems(): Promise<CartItem[]> {
   return [
     { id: 101, label: 'Menu Label', description: 'Menu description.', iconType: 'tag', initialQuantity: 1 },
     { id: 102, label: 'Menu Label', description: 'Menu description.', iconType: 'tag', initialQuantity: 3 },

@@ -16,7 +16,7 @@ export const CATEGORY_LABELS: Record<CategoryType | 'ALL', string> = {
     DESSERT: '디저트',
 };
 
-export interface MenuItem {
+export interface CartItem {
     id: number;
     label: string;
     description: string;
