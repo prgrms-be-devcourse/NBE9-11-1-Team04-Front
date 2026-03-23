@@ -141,6 +141,12 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
           >
             결제
           </button>
+          <button
+            onClick={() => setView('cart')}
+            className="w-full bg-white text-gray-500 py-2 rounded-md text-xs font-medium hover:text-gray-900 hover:bg-gray-50 transition-all"
+          >
+            ← 장바구니로 돌아가기
+          </button>
         </div>
       )}
     </div>
