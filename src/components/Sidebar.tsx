@@ -51,7 +51,37 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
     console.log("================ 데이터 확인 ================");
     console.log("1. 유저 정보 (userInfo):", userInfo);
     console.log("2. 주문 상품 목록 (orderInfo):", orderInfo);
-  }
+
+    try {
+      // --- 유저 생성 API 호출 ---
+      const response = await fetch('http://localhost:8080/api/v1/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo), // { email, address, zipCode }
+      });
+
+      // 요청 응답 객체
+      const rsData = await response.json();
+
+      if (rsData.resultCode.startsWith("201")) {
+        const rsUserId = rsData.data.user.id;
+        console.log("유저 생성 성공! ID:", rsUserId);
+
+        // Todo
+        // --- 2단계 - 생성된 ID를 가지고 주문(Order) API를 호출 구현 ---
+
+      } else {
+        alert(`실패!!!!!!!: ${rsData.msg}`);
+      }
+
+    } catch (error) {
+      console.error("에러:", error);
+      alert("오류가 발생했습니다.");
+    }
+  };
+
 
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-lg sticky top-8">
