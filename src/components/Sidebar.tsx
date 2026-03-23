@@ -35,11 +35,23 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
       alert("모든 정보를 입력해주세요.");
       return;
     }
-    // 여기서 API 1(유저 저장) -> API 2(주문 저장) 순차 호출 로직 실행
-    console.log("유저 정보:", userInfo);
-    console.log("최종 수량 데이터:", quantities);
-    alert("주문이 완료되었습니다!");
-  };
+
+    const orderInfo = items
+      .map((item) => ({
+        productId: item.id,
+        name: item.name,
+        quantity: quantities[item.id] || 0,
+      }))
+      .filter((order) => order.quantity > 0); // 수량이 0인 상품은 제외
+
+    if (orderInfo.length === 0) {
+      alert("장바구니가 비어 있습니다.");
+      return;
+    }
+    console.log("================ 데이터 확인 ================");
+    console.log("1. 유저 정보 (userInfo):", userInfo);
+    console.log("2. 주문 상품 목록 (orderInfo):", orderInfo);
+  }
 
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-lg sticky top-8">
@@ -76,9 +88,8 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
           <div className="p-4 border-t">
             <button
               onClick={() => setView('user')}
-              className="w-full bg-[#2D2D2D] text-white py-3
-               rounded-md text-sm font-medium
-                hover:bg-black transition-all active:scale-[0.98]">
+              className="w-full bg-[#2D2D2D] text-white py-3 rounded-md text-sm font-medium hover:bg-black transition-all active:scale-[0.98]"
+            >
               주문하기
             </button>
           </div>
@@ -97,8 +108,7 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
               <input
                 type="text"
                 placeholder="example@email.com"
-                className="w-full border border-gray-200 p-3 rounded-md outline-none
-                 text-sm focus:border-black"
+                className="w-full border border-gray-200 p-3 rounded-md outline-none text-sm focus:border-black"
                 value={userInfo.email}
                 onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
               />
@@ -108,8 +118,7 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
               <input
                 type="text"
                 placeholder="서울특별시 삼악로 110"
-                className="w-full border border-gray-200 p-3 rounded-md outline-none
-                 text-sm focus:border-black"
+                className="w-full border border-gray-200 p-3 rounded-md outline-none text-sm focus:border-black"
                 value={userInfo.address}
                 onChange={(e) => setUserInfo({ ...userInfo, address: e.target.value })}
               />
@@ -119,8 +128,7 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
               <input
                 type="text"
                 placeholder="000000"
-                className="w-full border border-gray-200 p-3 rounded-md outline-none 
-                text-sm focus:border-black"
+                className="w-full border border-gray-200 p-3 rounded-md outline-none text-sm focus:border-black"
                 value={userInfo.zipCode}
                 onChange={(e) => setUserInfo({ ...userInfo, zipCode: e.target.value })}
               />
