@@ -8,6 +8,12 @@ export interface Product {
     category: CategoryType;
 }
 
+export interface UserInfo {
+    email: string;
+    address: string;
+    zipCode: string;
+}
+
 // 화면 표시용 한글 매핑 객체
 export const CATEGORY_LABELS: Record<CategoryType | 'ALL', string> = {
     ALL: '전체',
@@ -18,7 +24,7 @@ export const CATEGORY_LABELS: Record<CategoryType | 'ALL', string> = {
 
 export interface CartItem {
     id: number;
-    label: string;
+    name: string;
     description: string;
     initialQuantity?: number;
     iconType: 'tag' | 'star';
