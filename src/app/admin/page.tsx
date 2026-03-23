@@ -19,8 +19,7 @@ export default async function AdminPage() {
 
   return (
     <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
-        
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8"> 
         {/* 관리자용 상품 리스트 */}
         <AdminProductGrid initialProducts={products} />
 
