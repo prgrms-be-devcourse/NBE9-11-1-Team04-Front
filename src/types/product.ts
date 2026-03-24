@@ -27,5 +27,16 @@ export interface CartItem {
     name: string;
     description: string;
     initialQuantity?: number;
-    iconType: 'tag' | 'star';
+    price: number;
+}
+
+export interface ProductDto{
+    id: number;
+    name: string;
+    price: number;
+    category: CategoryType;
+    description: string;
+    imageUrl: string,
+    created_at: string;
+    modified_at: string;
 }
