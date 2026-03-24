@@ -2,17 +2,20 @@
 
 import Link from 'next/link';
 import { Pencil, Trash2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { AdminProduct } from '@/types/adminProduct';
 
-export default function AdminProductCard({ adminProduct }: { adminProduct: AdminProduct }) {
-  const router = useRouter();
+export default function AdminProductCard({ 
+  adminProduct,
+  onDelete }: { 
+  adminProduct: AdminProduct 
+  onDelete : (id:number) => Promise<void>}) {
+  
 
   const handleDelete = async (id: number) => {
     if (!confirm("정말 삭제하시겠습니까?")) return;
-
+    await onDelete(id);
     alert("삭제 완료");
-    router.refresh();
+    
   };
 
   return (
