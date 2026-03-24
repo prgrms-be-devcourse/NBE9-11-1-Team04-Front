@@ -1,13 +1,19 @@
 'use client';
 
+import { AdminProduct } from '@/types/AdminProduct';
 import { useState } from 'react';
 
-export default function Sidebar() {
+export default function AdminSidebar({
+  onCreate,
+}: {
+  onCreate: (newProduct: AdminProduct) => void;
+}) {
   const [form, setForm] = useState({
     name: '',
     price: '',
     category: 'COFFEE',
     description: '',
+    stock: '',
     imageUrl: '',
   });
 
@@ -22,8 +28,45 @@ export default function Sidebar() {
     }));
   };
 
-  const onSubmit = () => {
-    console.log('등록할 상품:', form);
+  const onSubmit = async () => {
+    try {
+      const res = await fetch('http://localhost:8080/api/v1/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          price: Number(form.price),
+          category: form.category,
+          description: form.description,
+          stock: Number(form.stock),
+          imageUrl: form.imageUrl,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        alert(result.msg ?? '등록 실패');
+        return;
+      }
+
+      onCreate(result.data);
+      alert('등록 완료');
+
+      setForm({
+        name: '',
+        price: '',
+        category: 'COFFEE',
+        description: '',
+        stock: '',
+        imageUrl: '',
+      });
+    } catch (error) {
+      console.error(error);
+      alert('등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -88,6 +131,14 @@ export default function Sidebar() {
           placeholder="상품 설명"
           rows={3}
           className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm outline-none resize-none focus:border-gray-400"
+        />
+
+        <input
+          name="stock"
+          value={form.stock}
+          onChange={updateField}
+          placeholder="재고"
+          className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm outline-none focus:border-gray-400"
         />
 
         <input
