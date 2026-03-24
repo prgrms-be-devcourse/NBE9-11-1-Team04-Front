@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Tag, Star, Minus, Plus } from 'lucide-react';
 import { CartItem, UserInfo } from '@/types/product';
-
+import { env } from 'process';
 export default function Sidebar({ items, quantities, updateQty }: { items: CartItem[], quantities: any, updateQty: (id: number, delta: number) => void }) {
 
   // 1. 화면 전환 상태 (cart: 장바구니, user: 배송정보(유저 정보)입력)
@@ -34,7 +34,7 @@ export default function Sidebar({ items, quantities, updateQty }: { items: CartI
     const orderInfo = items
       .map((item) => ({
         productId: item.id,
-        name: item.name,
+        // name: item.name,
         quantity: quantities[item.id] || 0,
       }))
       .filter((order) => order.quantity > 0); // 수량이 0인 상품은 제외
@@ -63,13 +63,23 @@ export default function Sidebar({ items, quantities, updateQty }: { items: CartI
       if (rsData.resultCode.startsWith("201")) {
         const rsUserId = rsData.data.user.id;
         console.log("유저 생성 성공! ID:", rsUserId);
-
         // Todo
         // --- 2단계 - 생성된 ID를 가지고 주문(Order) API를 호출 구현 ---
 
+        // console.log(JSON.stringify({ orderProductRequests: orderInfo, userId: rsUserId }));
+
+        const orderResponse = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ orderProductRequests: orderInfo, userId: rsUserId }), 
+        });
+        // console.log(orderResponse);
       } else {
         alert(`실패!!!!!!!: ${rsData.msg}`);
       }
+      //여기서 주문 결과 화면으로 렌더링
 
     } catch (error) {
       console.error("에러:", error);
