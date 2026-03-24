@@ -1,12 +1,13 @@
 'use client'
 import Link from 'next/link';
 import { Pencil, Trash2 } from 'lucide-react'; //react 아이콘 라이브러리
-import { Product } from '@/types/product';
+
 import ProductCard from './ProductCard';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { AdminProduct } from '@/types/AdminProduct';
 
-export default function AdminProductCard({ product }: { product: Product }) {
+export default function AdminProductCard({ adminProduct }: { adminProduct: AdminProduct }) {
     const router = useRouter();
     
     const handleDelete = async (id: number) => {
@@ -26,18 +27,18 @@ export default function AdminProductCard({ product }: { product: Product }) {
         </svg>
       </div>
       <div className="space-y-1">
-        <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
-        <p className="text-lg font-bold text-gray-900">${product.price}</p>
-        <p className="text-xs text-gray-500">{product.description}</p>
+        <h3 className="text-sm font-medium text-gray-900">{adminProduct.name}</h3>
+        <p className="text-lg font-bold text-gray-900">${adminProduct.price}</p>
+        <p className="text-xs text-gray-500">{adminProduct.description}</p>
         <div className="mt-3 flex justify-end gap-2">
         <Link
-          href={`/admin/products/${product.id}/edit`}
+          href={`/admin/products/${adminProduct.id}/edit`}
           className="rounded-md p-2 text-gray-700 hover:bg-gray-100"
         >
           <Pencil className="w-4 h-4" />
         </Link>
 
-        <button onClick={() => handleDelete(product.id)}
+        <button onClick={() => handleDelete(adminProduct.id)}
                 className="rounded-md p-2 text-gray-700 hover:bg-gray-100">
                 <Trash2 className="w-4 h-4" />
     </button>
