@@ -13,7 +13,7 @@ export default function ProductCard({ product,children }: { product: Product, ch
         <p className="text-lg font-bold text-gray-900">${product.price}</p>
         <p className="text-xs text-gray-500">{product.description}</p>
       </div>
-      {children}
+      
     </div>
   );
 }
