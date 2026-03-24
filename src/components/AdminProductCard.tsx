@@ -14,7 +14,6 @@ export default function AdminProductCard({
   const handleDelete = async (id: number) => {
     if (!confirm("정말 삭제하시겠습니까?")) return;
     await onDelete(id);
-    alert("삭제 완료");
     
   };
 

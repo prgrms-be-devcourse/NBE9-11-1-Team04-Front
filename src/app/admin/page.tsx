@@ -53,12 +53,12 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         <AdminProductGrid 
         initialProducts={adminProducts} 
         onDelete={handleDelete}/>
 
-        <aside className="lg:col-span-1">
+        <aside className="lg:col-span-1 mt-17">
           <AdminSidebar onCreate={handleCreate} />
         </aside>
       </div>
