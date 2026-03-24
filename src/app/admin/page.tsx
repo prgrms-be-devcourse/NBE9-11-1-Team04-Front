@@ -1,16 +1,17 @@
 import AdminProductGrid from '@/components/AdminProductGrid';
 import AdminSidebar from '@/components/AdminSidebar';
-import { Product } from '@/types/product';
+import { AdminProduct } from '@/types/AdminProduct';
 
-async function getProducts(): Promise<Product[]> {
+
+async function getProducts(): Promise<AdminProduct[]> {
     // 백엔드 연결 전 테스트 데이터 (category 포함)
     return [
-      { id: 1, name: '아메리카노', price: 4500, description: '진한 에스프레소', category: 'COFFEE' },
-      { id: 2, name: '카페라떼', price: 5000, description: '부드러운 우유', category: 'COFFEE' },
-      { id: 3, name: '얼그레이', price: 5500, description: '향긋한 홍차', category: 'TEA' },
-      { id: 4, name: '치즈케이크', price: 7000, description: '꾸덕한 치즈', category: 'DESSERT' },
-      { id: 5, name: '녹차', price: 5500, description: '깔끔한 맛', category: 'TEA' },
-      { id: 6, name: '초코쿠키', price: 3000, description: '달콤한 쿠키', category: 'DESSERT' },
+      { id: 1, name: '아메리카노', price: 4500, description: '진한 에스프레소', category: 'COFFEE' ,stock: 10},
+      { id: 2, name: '카페라떼', price: 5000, description: '부드러운 우유', category: 'COFFEE', stock :9},
+      { id: 3, name: '얼그레이', price: 5500, description: '향긋한 홍차', category: 'TEA' ,stock:19},
+      { id: 4, name: '치즈케이크', price: 7000, description: '꾸덕한 치즈', category: 'DESSERT' ,stock:20},
+      { id: 5, name: '녹차', price: 5500, description: '깔끔한 맛', category: 'TEA',stock:9 },
+      { id: 6, name: '초코쿠키', price: 3000, description: '달콤한 쿠키', category: 'DESSERT',stock:7 },
     ];
   }
 
