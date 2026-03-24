@@ -9,7 +9,6 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
   // 1. 화면 전환 상태 (cart: 장바구니, user: 배송정보(유저 정보)입력)
   // 기본 상태 : 장바구니
   const [view, setView] = useState<'cart' | 'user'>('cart');
-
   // 2. 장바구니 담은 상품 수량 관리
   const [quantities, setQuantities] = useState<{ [key: number]: number }>(
     items.reduce((acc, item) => ({ ...acc, [item.id]: item.initialQuantity || 0 }), {})
@@ -21,6 +20,10 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
       [id]: Math.max(0, prev[id] + delta)
     }));
   };
+
+  const totalPrice = items.reduce((acc, item) =>
+    acc + (item.price * (quantities[item.id] || 0)), 0
+  );
 
   // 3. 유저 정보 입력 상태 관리
   const [userInfo, setUserInfo] = useState<UserInfo>({
@@ -96,10 +99,11 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
               {items.map((item) => (
                 <div key={item.id} className="flex items-start justify-between py-3 border-b border-gray-100 last:border-0">
                   <div className="flex gap-3">
-                    {item.iconType === 'tag' ? <Tag className="w-5 h-5 text-gray-500 mt-1" /> : <Star className="w-5 h-5 text-gray-500 mt-1" />}
+                    <Tag className="w-5 h-5 text-gray-500 mt-1" /> 
                     <div>
                       <p className="text-sm font-medium text-gray-900">{item.name}</p>
                       <p className="text-xs text-gray-500">{item.description}</p>
+                      <p className="text-xs text-bold-500">${item.price}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 border rounded-md px-1 py-0.5">
@@ -113,9 +117,10 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
                   </div>
                 </div>
               ))}
+              <div className=" text-xl font-bold text-gray-900  mt-3">${totalPrice}</div>
             </div>
           </div>
-          <div className="p-4 border-t">
+          <div className="p-4">
             <button
               onClick={() => setView('user')}
               className="w-full bg-[#2D2D2D] text-white py-3 rounded-md text-sm font-medium hover:bg-black transition-all active:scale-[0.98]"
