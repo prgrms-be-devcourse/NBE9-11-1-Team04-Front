@@ -1,0 +1,46 @@
+'use client';
+
+import AdminProductGrid from '@/components/AdminProductGrid';
+import AdminSidebar from '@/components/AdminSidebar';
+import { AdminProduct } from '@/types/AdminProduct';
+import { useEffect, useState } from 'react';
+
+export default function AdminPage() {
+  const [adminProducts, setProducts] = useState<AdminProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('http://localhost:8080/api/v1/products');
+      if (!res.ok) {
+        throw new Error('상품 목록 조회 실패');
+      }
+
+      const data: AdminProduct[] = await res.json();
+      setProducts(data);
+    } catch (error) {
+      console.error('상품 목록 불러오기 실패:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+  const handleCreate = (newProduct: AdminProduct) => {
+    setProducts((prev) => [newProduct, ...prev]);
+  };
+
+  return (
+    <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <AdminProductGrid initialProducts={adminProducts} />
+
+        <aside className="lg:col-span-1">
+          <AdminSidebar onCreate={handleCreate} />
+        </aside>
+      </div>
+    </main>
+  );
+}
