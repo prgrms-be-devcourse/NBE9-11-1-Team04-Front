@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { CategoryType, CATEGORY_LABELS } from '@/types/product';
 import AdminProductCard from './AdminProductCard';
-import { AdminProduct } from '@/types/AdminProduct';
+import { AdminProduct } from '@/types/adminProduct';
 
 const TABS: (CategoryType | 'ALL')[] = ['ALL', 'COFFEE', 'TEA', 'DESSERT'];
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { AdminProduct } from '@/types/AdminProduct';
+import { AdminProduct } from '@/types/adminProduct';
 import { useState } from 'react';
 
 export default function AdminSidebar({
