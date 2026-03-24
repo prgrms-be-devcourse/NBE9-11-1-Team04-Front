@@ -24,6 +24,25 @@ export default function AdminPage() {
       setLoading(false);
     }
   };
+  const handleDelete = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/v1/products/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error('상품 삭제 실패');
+      }
+
+      const data = await res.json();
+      alert(data.msg);
+
+      setProducts((prev) => prev.filter((product) => product.id !== id));
+    } catch (error) {
+      console.error('삭제 중 오류 발생:', error);
+      alert('삭제에 실패했습니다.');
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -34,10 +53,12 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <AdminProductGrid initialProducts={adminProducts} />
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+        <AdminProductGrid 
+        initialProducts={adminProducts} 
+        onDelete={handleDelete}/>
 
-        <aside className="lg:col-span-1">
+        <aside className="lg:col-span-1 mt-17">
           <AdminSidebar onCreate={handleCreate} />
         </aside>
       </div>
