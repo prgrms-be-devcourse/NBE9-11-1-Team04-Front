@@ -1,85 +1,191 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ORDER_STATUS_LABELS, Order } from '@/types/order';
 
 interface OrderDetailModalProps {
-  order: Order | null;
+  order: Order;
   onClose: () => void;
 }
 
 export default function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
-  if (!order) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      setMounted(false);
+    };
+  }, []);
+
+  if (!mounted) {
     return null;
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-2xl rounded-xl bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+  return createPortal(
+    <div
+      onClick={onClose}
+      aria-hidden="true"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '24px',
+      }}
+    >
+      <div
+        onClick={(event) => event.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="주문 상세 모달"
+        style={{
+          width: '100%',
+          maxWidth: '800px',
+          maxHeight: '80vh',
+          overflow: 'hidden',
+          borderRadius: '16px',
+          backgroundColor: '#ffffff',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.25)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid #e5e7eb',
+            padding: '20px 24px',
+          }}
+        >
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">주문 상세</h2>
-            <p className="mt-1 text-sm text-gray-500">주문 ID: {order.id}</p>
+            <p
+              style={{
+                margin: 0,
+                fontSize: '12px',
+                fontWeight: 600,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: '#9ca3af',
+              }}
+            >
+              Order Detail
+            </p>
+            <h2
+              style={{
+                margin: '8px 0 0 0',
+                fontSize: '24px',
+                fontWeight: 700,
+                color: '#111827',
+              }}
+            >
+              주문 상세
+            </h2>
           </div>
+
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
+            style={{
+              border: '1px solid #d1d5db',
+              backgroundColor: '#ffffff',
+              borderRadius: '8px',
+              padding: '10px 14px',
+              fontSize: '14px',
+              cursor: 'pointer',
+            }}
           >
             닫기
           </button>
         </div>
 
-        <div className="space-y-6 px-6 py-5">
-          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-              <p className="text-xs font-medium text-gray-500">주문 ID</p>
-              <p className="mt-1 text-sm text-gray-900">{order.id}</p>
+        <div
+          style={{
+            overflowY: 'auto',
+            padding: '24px',
+          }}
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '16px',
+              marginBottom: '24px',
+            }}
+          >
+            <InfoCard label="주문 ID" value={String(order.id)} />
+            <InfoCard label="회원 ID" value={String(order.userId)} />
+            <InfoCard label="주문 상태" value={ORDER_STATUS_LABELS[order.status]} />
+            <InfoCard label="총 금액" value={`${order.totalPrice.toLocaleString()}원`} />
+            <div style={{ gridColumn: '1 / -1' }}>
+              <InfoCard label="주문 일시" value={order.ordered_at} />
             </div>
-
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-              <p className="text-xs font-medium text-gray-500">회원 ID</p>
-              <p className="mt-1 text-sm text-gray-900">{order.userId}</p>
-            </div>
-
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-              <p className="text-xs font-medium text-gray-500">주문 상태</p>
-              <p className="mt-1 text-sm text-gray-900">{ORDER_STATUS_LABELS[order.status]}</p>
-            </div>
-
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-              <p className="text-xs font-medium text-gray-500">총 금액</p>
-              <p className="mt-1 text-sm text-gray-900">{order.totalPrice.toLocaleString()}원</p>
-            </div>
-
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 sm:col-span-2">
-              <p className="text-xs font-medium text-gray-500">주문 일시</p>
-              <p className="mt-1 text-sm text-gray-900">{order.ordered_at}</p>
-            </div>
-          </section>
+          </div>
 
           <section>
-            <h3 className="text-sm font-semibold text-gray-900">주문 상품</h3>
+            <h3
+              style={{
+                margin: '0 0 12px 0',
+                fontSize: '16px',
+                fontWeight: 700,
+                color: '#111827',
+              }}
+            >
+              주문 상품
+            </h3>
 
             {order.orderProducts.length === 0 ? (
-              <div className="mt-3 rounded-lg border border-dashed border-gray-300 px-4 py-6 text-center text-sm text-gray-500">
+              <div
+                style={{
+                  border: '1px dashed #d1d5db',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  textAlign: 'center',
+                  color: '#6b7280',
+                  fontSize: '14px',
+                }}
+              >
                 주문 상품 데이터가 없습니다.
               </div>
             ) : (
-              <div className="mt-3 overflow-hidden rounded-lg border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200 text-sm">
-                  <thead className="bg-gray-50">
+              <div
+                style={{
+                  overflow: 'hidden',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '12px',
+                }}
+              >
+                <table
+                  style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    fontSize: '14px',
+                  }}
+                >
+                  <thead style={{ backgroundColor: '#f9fafb' }}>
                     <tr>
-                      <th className="px-4 py-3 text-left font-medium text-gray-600">orderId</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-600">productId</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-600">quantity</th>
+                      <Th>orderId</Th>
+                      <Th>productId</Th>
+                      <Th>quantity</Th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
+                  <tbody>
                     {order.orderProducts.map((item, index) => (
                       <tr key={`${item.orderId}-${item.productId}-${index}`}>
-                        <td className="px-4 py-3 text-gray-900">{item.orderId}</td>
-                        <td className="px-4 py-3 text-gray-900">{item.productId}</td>
-                        <td className="px-4 py-3 text-gray-900">{item.quantity}</td>
+                        <Td>{item.orderId}</Td>
+                        <Td>{item.productId}</Td>
+                        <Td>{item.quantity}</Td>
                       </tr>
                     ))}
                   </tbody>
@@ -89,6 +195,71 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
           </section>
         </div>
       </div>
+    </div>,
+    document.body
+  );
+}
+
+function InfoCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div
+      style={{
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        backgroundColor: '#f9fafb',
+        padding: '16px',
+      }}
+    >
+      <p
+        style={{
+          margin: 0,
+          fontSize: '12px',
+          fontWeight: 600,
+          color: '#6b7280',
+        }}
+      >
+        {label}
+      </p>
+      <p
+        style={{
+          margin: '8px 0 0 0',
+          fontSize: '14px',
+          color: '#111827',
+          wordBreak: 'break-all',
+        }}
+      >
+        {value}
+      </p>
     </div>
+  );
+}
+
+function Th({ children }: { children: React.ReactNode }) {
+  return (
+    <th
+      style={{
+        textAlign: 'left',
+        padding: '12px 16px',
+        borderBottom: '1px solid #e5e7eb',
+        color: '#4b5563',
+        fontWeight: 600,
+      }}
+    >
+      {children}
+    </th>
+  );
+}
+
+function Td({ children }: { children: React.ReactNode }) {
+  return (
+    <td
+      style={{
+        padding: '12px 16px',
+        borderBottom: '1px solid #e5e7eb',
+        color: '#111827',
+      }}
+    >
+      {children}
+    </td>
   );
 }
