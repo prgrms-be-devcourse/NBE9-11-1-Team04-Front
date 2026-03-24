@@ -1,4 +1,5 @@
 import ProductGrid from '@/components/ProductGrid';
+import ProductWrapper from '@/components/ProductWrapper';
 import Sidebar from '@/components/Sidebar';
 import { Product, CartItem } from '@/types/product';
 import { ProductDto } from '@/types/product';
@@ -15,46 +16,13 @@ async function getProducts(): Promise<Product[]> {
   ];
 }
 
-async function getMenuItems(): Promise<CartItem[]> {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/products`, {
-      cache: 'no-store' // 실시간 재고 반영을 위해 캐시 무효화
-    });
-    if (!response.ok) throw new Error('Failed to fetch');
-    const data: ProductDto[] = await response.json();
-    return data.map(item => ({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      description: item.description,
-      initialQuantity:0
-    }));
-  } catch (error) {
-    console.error(error);
-    return []; // 에러 시 빈 배열 반환
-  }
-  // return [
-  //   { id: 1, name: '카페라떼', price:4500,description: 'Menu description.',  initialQuantity: 1 },
-  //   { id: 2, name: '얼그레이', price: 4500, description: 'Menu description.',  initialQuantity: 3 },
-  //   { id: 3, name: '치즈케이크', price: 4500, description: 'Menu description.', initialQuantity: 0 },
-  //   { id: 4, name: '녹차', price: 4500, description: 'Menu description.',  initialQuantity: 0 },
-  //   { id: 5, name: '초코쿠키', price: 4500, description: 'Menu description.',  initialQuantity: 0 },
-  // ];
-} 
 export default async function HomePage() {
-  const [products, menuItems] = await Promise.all([getProducts(), getMenuItems()]);
+  const [products] = await Promise.all([getProducts()]);
   
   return (
     <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* 카테고리 탭과 상품 그리드가 합쳐진 컴포넌트 */}
-        <ProductGrid initialProducts={products} />
-
-        {/* 사이드바 */}
-        <aside className="lg:col-span-1">
-          <Sidebar items={menuItems} />
-        </aside>
-      </div>
+      {/* quantity를 useState로 함께 관리하기 위해 client 페이지 추가 */}
+      <ProductWrapper products={products}></ProductWrapper>
     </main>
   );
 }

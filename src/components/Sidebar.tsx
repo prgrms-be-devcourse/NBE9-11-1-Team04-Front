@@ -4,23 +4,15 @@ import { useState } from 'react';
 import { Tag, Star, Minus, Plus } from 'lucide-react';
 import { CartItem, UserInfo } from '@/types/product';
 
-export default function Sidebar({ items }: { items: CartItem[] }) {
+export default function Sidebar({ items, quantities, updateQty }: { items: CartItem[], quantities: any, updateQty: (id: number, delta: number) => void }) {
 
   // 1. 화면 전환 상태 (cart: 장바구니, user: 배송정보(유저 정보)입력)
   // 기본 상태 : 장바구니
   const [view, setView] = useState<'cart' | 'user'>('cart');
-  // 2. 장바구니 담은 상품 수량 관리
-  const [quantities, setQuantities] = useState<{ [key: number]: number }>(
-    items.reduce((acc, item) => ({ ...acc, [item.id]: item.initialQuantity || 0 }), {})
-  );
 
-  const updateQty = (id: number, delta: number) => {
-    setQuantities(prev => ({
-      ...prev,
-      [id]: Math.max(0, prev[id] + delta)
-    }));
-  };
+  // 수량 및 수량 조절 함수는 그 위 컴포넌트에서 받아온다(card 클릭시에도 수량 추가하기 위해)
 
+  // 전체 가격 계산 
   const totalPrice = items.reduce((acc, item) =>
     acc + (item.price * (quantities[item.id] || 0)), 0
   );
@@ -96,7 +88,9 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
             <h2 className="text-xl font-bold text-gray-900 mb-4">장바구니</h2>
 
             <div className="space-y-1">
-              {items.map((item) => (
+              {items.map((item) =>
+              (
+                quantities[item.id]>0?
                 <div key={item.id} className="flex items-start justify-between py-3 border-b border-gray-100 last:border-0">
                   <div className="flex gap-3">
                     <Tag className="w-5 h-5 text-gray-500 mt-1" /> 
@@ -115,7 +109,7 @@ export default function Sidebar({ items }: { items: CartItem[] }) {
                       <Plus className="w-3 h-3" />
                     </button>
                   </div>
-                </div>
+                </div>:<div></div>
               ))}
               <div className=" text-xl font-bold text-gray-900  mt-3">${totalPrice}</div>
             </div>
