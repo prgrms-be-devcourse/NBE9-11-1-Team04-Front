@@ -28,6 +28,7 @@ export default function AdminProductCard({ adminProduct }: { adminProduct: Admin
           <h3 className="text-sm font-medium text-gray-900">{adminProduct.name}</h3>
           <p className="text-lg font-bold text-gray-900">${adminProduct.price}</p>
           <p className="text-xs text-gray-500">{adminProduct.description}</p>
+          <p className="text-xs text-gray-500">재고 : {adminProduct.stock}</p>
 
           <div className="mt-3 flex justify-end gap-2">
             <Link
