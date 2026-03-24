@@ -2,7 +2,7 @@
 
 import AdminProductGrid from '@/components/AdminProductGrid';
 import AdminSidebar from '@/components/AdminSidebar';
-import { AdminProduct } from '@/types/AdminProduct';
+import { AdminProduct } from '@/types/adminProduct';
 import { useEffect, useState } from 'react';
 
 export default function AdminPage() {
