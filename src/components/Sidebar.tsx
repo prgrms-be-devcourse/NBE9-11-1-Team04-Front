@@ -11,7 +11,7 @@ export default function Sidebar({ items, quantities, updateQty }: { items: CartI
   const [view, setView] = useState<'cart' | 'user'>('cart');
 
   // 수량 및 수량 조절 함수는 그 위 컴포넌트에서 받아온다(card 클릭시에도 수량 추가하기 위해)
-
+  const activeItems = items.filter(item => quantities[item.id] > 0);
   // 전체 가격 계산 
   const totalPrice = items.reduce((acc, item) =>
     acc + (item.price * (quantities[item.id] || 0)), 0
@@ -79,7 +79,7 @@ export default function Sidebar({ items, quantities, updateQty }: { items: CartI
 
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-lg sticky top-8">
+    <div className="bg-white rounded-lg overflow-hidden shadow-lg sticky top-8 mt-17">
       {view === 'cart' ? (
         /* --- 장바구니 뷰 --- */
         <>
@@ -88,29 +88,33 @@ export default function Sidebar({ items, quantities, updateQty }: { items: CartI
             <h2 className="text-xl font-bold text-gray-900 mb-4">장바구니</h2>
 
             <div className="space-y-1">
-              {items.map((item) =>
-              (
-                quantities[item.id]>0?
-                <div key={item.id} className="flex items-start justify-between py-3 border-b border-gray-100 last:border-0">
-                  <div className="flex gap-3">
-                    <Tag className="w-5 h-5 text-gray-500 mt-1" /> 
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                      <p className="text-xs text-gray-500">{item.description}</p>
-                      <p className="text-xs text-bold-500">${item.price}</p>
+              {activeItems.length === 0 ? (
+                <div className='min-h-[90px] flex items-center justify-center'>
+                  <p className='text-sm text-gray-500'>담긴 상품이 없습니다</p>
+                </div>
+              ) : (
+                activeItems.map((item) => (
+                  <div key={item.id} className="flex items-start justify-between py-3 border-b border-gray-100 last:border-0">
+                    <div className="flex gap-3">
+                      <Tag className="w-5 h-5 text-gray-500 mt-1" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                        <p className="text-xs text-gray-500">{item.description}</p>
+                        <p className="text-xs font-bold text-gray-700">${item.price}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 border rounded-md px-1 py-0.5">
+                      <button onClick={() => updateQty(item.id, -1)} className="p-1 hover:bg-gray-100 rounded text-gray-500">
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="text-sm font-semibold min-w-[16px] text-center">{quantities[item.id]}</span>
+                      <button onClick={() => updateQty(item.id, 1)} className="p-1 hover:bg-gray-100 rounded text-gray-500">
+                        <Plus className="w-3 h-3" />
+                      </button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 border rounded-md px-1 py-0.5">
-                    <button onClick={() => updateQty(item.id, -1)} className="p-1 hover:bg-gray-100 rounded text-gray-500">
-                      <Minus className="w-3 h-3" />
-                    </button>
-                    <span className="text-sm font-semibold min-w-[16px] text-center">{quantities[item.id]}</span>
-                    <button onClick={() => updateQty(item.id, 1)} className="p-1 hover:bg-gray-100 rounded text-gray-500">
-                      <Plus className="w-3 h-3" />
-                    </button>
-                  </div>
-                </div>:<div></div>
-              ))}
+                ))
+              )} 
               <div className=" text-xl font-bold text-gray-900  mt-3">${totalPrice}</div>
             </div>
           </div>

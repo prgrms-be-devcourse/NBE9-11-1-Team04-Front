@@ -30,7 +30,7 @@ export interface CartItem {
     price: number;
 }
 
-export interface ProductDto{
+export interface ProductDto {
     id: number;
     name: string;
     price: number;
