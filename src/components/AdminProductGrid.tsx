@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import {  CategoryType, CATEGORY_LABELS } from '@/types/product';
+import { CategoryType, CATEGORY_LABELS } from '@/types/product';
 import AdminProductCard from './AdminProductCard';
 import { AdminProduct } from '@/types/AdminProduct';
-
-
 
 const TABS: (CategoryType | 'ALL')[] = ['ALL', 'COFFEE', 'TEA', 'DESSERT'];
 
@@ -14,11 +12,9 @@ export default function AdminProductGrid({
 }: {
   initialProducts: AdminProduct[];
 }) {
-  // 상태 (카테고리 선택)
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryType | 'ALL'>('ALL');
 
-  // 필터링
   const filteredProducts =
     selectedCategory === 'ALL'
       ? initialProducts
@@ -28,7 +24,6 @@ export default function AdminProductGrid({
 
   return (
     <div className="lg:col-span-3 space-y-6">
-      {/* 카테고리 탭 */}
       <div className="flex gap-2 p-1 bg-[#3D2B24] rounded-lg w-fit">
         {TABS.map((tab) => (
           <button
@@ -45,7 +40,6 @@ export default function AdminProductGrid({
         ))}
       </div>
 
-      {/* 관리자용 상품 카드 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 h-fit">
         {filteredProducts.map((adminProduct) => (
           <AdminProductCard key={adminProduct.id} adminProduct={adminProduct} />
