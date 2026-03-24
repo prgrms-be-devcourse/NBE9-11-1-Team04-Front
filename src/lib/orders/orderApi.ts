@@ -1,15 +1,72 @@
 import { toAppError } from '@/lib/errors/appError';
 import { mockOrders } from '@/lib/orders/mockOrders';
-import { Order, OrderStatus } from '@/types/order';
+import { Order, OrderStatus, RsData } from '@/types/order';
+
+const USE_MOCK = true;
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function getOrdersFromMock(): Promise<Order[]> {
+  await delay(300);
+  return mockOrders;
+}
+
+async function updateOrderStatusFromMock(orderId: number, status: OrderStatus): Promise<Order> {
+  await delay(300);
+
+  const targetOrder = mockOrders.find((order) => order.id === orderId);
+
+  if (!targetOrder) {
+    throw new Error('주문을 찾을 수 없습니다.');
+  }
+
+  const updatedOrder: Order = {
+    ...targetOrder,
+    status,
+  };
+
+  return updatedOrder;
+}
+
+async function getOrdersFromApi(): Promise<Order[]> {
+  const response = await fetch('/api/v1/admin/orders', {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    throw new Error('주문 목록 조회에 실패했습니다.');
+  }
+
+  const result: RsData<Order[]> = await response.json();
+  return result.data;
+}
+
+async function updateOrderStatusFromApi(orderId: number, status: OrderStatus): Promise<Order> {
+  const response = await fetch(`/api/v1/admin/orders/${orderId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ status }),
+  });
+
+  if (!response.ok) {
+    throw new Error('주문 상태 변경에 실패했습니다.');
+  }
+
+  const result: RsData<Order> = await response.json();
+  return result.data;
+}
+
 export async function getOrders(): Promise<Order[]> {
   try {
-    await delay(300);
-    return mockOrders;
+    if (USE_MOCK) {
+      return await getOrdersFromMock();
+    }
+
+    return await getOrdersFromApi();
   } catch (error) {
     throw toAppError(error);
   }
@@ -17,18 +74,11 @@ export async function getOrders(): Promise<Order[]> {
 
 export async function updateOrderStatus(orderId: number, status: OrderStatus): Promise<Order> {
   try {
-    await delay(300);
-
-    const targetOrder = mockOrders.find((order) => order.id === orderId);
-
-    if (!targetOrder) {
-      throw new Error('주문을 찾을 수 없습니다.');
+    if (USE_MOCK) {
+      return await updateOrderStatusFromMock(orderId, status);
     }
 
-    return {
-      ...targetOrder,
-      status,
-    };
+    return await updateOrderStatusFromApi(orderId, status);
   } catch (error) {
     throw toAppError(error);
   }
