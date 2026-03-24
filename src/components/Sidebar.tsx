@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { Tag, Star, Minus, Plus } from 'lucide-react';
 import { CartItem, UserInfo } from '@/types/product';
 import { env } from 'process';
-export default function Sidebar({ items, quantities, updateQty }: { items: CartItem[], quantities: any, updateQty: (id: number, delta: number) => void }) {
+export default function Sidebar({ items, quantities, updateQty, onSuccess }:
+  { items: CartItem[], quantities: any, updateQty: (id: number, delta: number) => void, onSuccess: (data: any) => void }) {
 
   // 1. 화면 전환 상태 (cart: 장바구니, user: 배송정보(유저 정보)입력)
   // 기본 상태 : 장바구니
   const [view, setView] = useState<'cart' | 'user'>('cart');
-
   // 수량 및 수량 조절 함수는 그 위 컴포넌트에서 받아온다(card 클릭시에도 수량 추가하기 위해)
   const activeItems = items.filter(item => quantities[item.id] > 0);
   // 전체 가격 계산 
@@ -36,6 +36,15 @@ export default function Sidebar({ items, quantities, updateQty }: { items: CartI
         productId: item.id,
         // name: item.name,
         quantity: quantities[item.id] || 0,
+      }))
+      .filter((order) => order.quantity > 0); // 수량이 0인 상품은 제외
+
+    const orderCheckInfo = items
+      .map((item) => ({
+        productId: item.id,
+        name: item.name,
+        quantity: quantities[item.id] || 0,
+        price: item.price
       }))
       .filter((order) => order.quantity > 0); // 수량이 0인 상품은 제외
 
@@ -73,14 +82,20 @@ export default function Sidebar({ items, quantities, updateQty }: { items: CartI
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ orderProductRequests: orderInfo, userId: rsUserId }), 
+          body: JSON.stringify({ orderProductRequests: orderInfo, userId: rsUserId }),
         });
-        // console.log(orderResponse);
+        if (orderResponse.ok) {
+          // 백엔드 응답을 기다리지 않고, 내가 만든 데이터를 그대로 성공 화면으로 보냄
+          onSuccess({
+            orderNumber: `ORD-${Date.now().toString().slice(-6)}`,
+            orderProducts: orderCheckInfo,
+            totalPrice: totalPrice
+          });
+          // console.log(orderResponse);
+        }
       } else {
         alert(`실패!!!!!!!: ${rsData.msg}`);
       }
-      //여기서 주문 결과 화면으로 렌더링
-
     } catch (error) {
       console.error("에러:", error);
       alert("오류가 발생했습니다.");

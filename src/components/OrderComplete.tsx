@@ -7,8 +7,8 @@ export default function OrderComplete({ orderData, onBackToMain }: any) {
         <div className="fixed inset-0 z-50 bg-[#2D1B14] flex items-center justify-center p-4">
             <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl shadow-black/5 overflow-hidden border border-[#E5E0DD]">
                 <div className="p-10 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-green-50 rounded-full mb-6">
-                        <CheckCircle2 className="w-10 h-10 text-green-400" />
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-50 rounded-full mb-6">
+                        <CheckCircle2 className="w-10 h-10 text-black-600" />
                     </div>
 
                     <h1 className="text-2xl font-black text-gray-900 mb-2">주문이 완료되었습니다</h1>
