@@ -16,11 +16,11 @@ async function getProducts(): Promise<Product[]> {
 
 async function getMenuItems(): Promise<CartItem[]> {
   return [
-    { id: 101, label: 'Menu Label', description: 'Menu description.', iconType: 'tag', initialQuantity: 1 },
-    { id: 102, label: 'Menu Label', description: 'Menu description.', iconType: 'tag', initialQuantity: 3 },
-    { id: 103, label: 'Menu Label', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
-    { id: 104, label: 'Menu Label', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
-    { id: 105, label: 'Menu Label', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
+    { id: 1, name: '카페라떼', description: 'Menu description.', iconType: 'star', initialQuantity: 1 },
+    { id: 2, name: '얼그레이', description: 'Menu description.', iconType: 'star', initialQuantity: 3 },
+    { id: 3, name: '치즈케이크', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
+    { id: 4, name: '녹차', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
+    { id: 5, name: '초코쿠키', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
   ];
 }
 
