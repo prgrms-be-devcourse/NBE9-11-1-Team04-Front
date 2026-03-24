@@ -9,8 +9,10 @@ const TABS: (CategoryType | 'ALL')[] = ['ALL', 'COFFEE', 'TEA', 'DESSERT'];
 
 export default function AdminProductGrid({
   initialProducts,
+  onDelete,
 }: {
   initialProducts: AdminProduct[];
+  onDelete: (id:number) => Promise<void>;
 }) {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryType | 'ALL'>('ALL');
@@ -42,7 +44,9 @@ export default function AdminProductGrid({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 h-fit">
         {filteredProducts.map((adminProduct) => (
-          <AdminProductCard key={adminProduct.id} adminProduct={adminProduct} />
+          <AdminProductCard key={adminProduct.id} 
+          adminProduct={adminProduct} 
+          onDelete={onDelete}/>
         ))}
       </div>
     </div>
