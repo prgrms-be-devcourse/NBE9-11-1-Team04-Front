@@ -36,7 +36,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(33, 16, 11, 0.58)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -50,12 +50,13 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
         aria-label="주문 상세 모달"
         style={{
           width: '100%',
-          maxWidth: '800px',
-          maxHeight: '80vh',
+          maxWidth: '860px',
+          maxHeight: '84vh',
           overflow: 'hidden',
-          borderRadius: '16px',
-          backgroundColor: '#ffffff',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.25)',
+          borderRadius: '18px',
+          backgroundColor: '#f7f4f2',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.28)',
+          border: '1px solid rgba(75, 38, 25, 0.12)',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -63,10 +64,11 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
-            borderBottom: '1px solid #e5e7eb',
-            padding: '20px 24px',
+            padding: '24px 28px 20px',
+            borderBottom: '1px solid #e8ddd7',
+            backgroundColor: '#ffffff',
           }}
         >
           <div>
@@ -74,10 +76,10 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               style={{
                 margin: 0,
                 fontSize: '12px',
-                fontWeight: 600,
+                fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: '#9ca3af',
+                color: '#9b8b82',
               }}
             >
               Order Detail
@@ -85,24 +87,36 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
             <h2
               style={{
                 margin: '8px 0 0 0',
-                fontSize: '24px',
-                fontWeight: 700,
-                color: '#111827',
+                fontSize: '34px',
+                fontWeight: 800,
+                color: '#1f1f1f',
+                lineHeight: 1.1,
               }}
             >
               주문 상세
             </h2>
+            <p
+              style={{
+                margin: '8px 0 0 0',
+                fontSize: '14px',
+                color: '#7b6d65',
+              }}
+            >
+              주문 ID: {order.id}
+            </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
             style={{
-              border: '1px solid #d1d5db',
-              backgroundColor: '#ffffff',
-              borderRadius: '8px',
-              padding: '10px 14px',
+              border: 'none',
+              borderRadius: '10px',
+              backgroundColor: '#2f2f2f',
+              color: '#ffffff',
+              padding: '10px 16px',
               fontSize: '14px',
+              fontWeight: 700,
               cursor: 'pointer',
             }}
           >
@@ -113,33 +127,33 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
         <div
           style={{
             overflowY: 'auto',
-            padding: '24px',
+            padding: '24px 28px 28px',
           }}
         >
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '16px',
-              marginBottom: '24px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+              gap: '14px',
             }}
           >
             <InfoCard label="주문 ID" value={String(order.id)} />
             <InfoCard label="회원 ID" value={String(order.userId)} />
             <InfoCard label="주문 상태" value={ORDER_STATUS_LABELS[order.status]} />
             <InfoCard label="총 금액" value={`${order.totalPrice.toLocaleString()}원`} />
-            <div style={{ gridColumn: '1 / -1' }}>
-              <InfoCard label="주문 일시" value={order.ordered_at} />
-            </div>
           </div>
 
-          <section>
+          <div style={{ marginTop: '14px' }}>
+            <InfoCard label="주문 일시" value={order.ordered_at} fullWidth />
+          </div>
+
+          <section style={{ marginTop: '28px' }}>
             <h3
               style={{
                 margin: '0 0 12px 0',
-                fontSize: '16px',
-                fontWeight: 700,
-                color: '#111827',
+                fontSize: '20px',
+                fontWeight: 800,
+                color: '#241915',
               }}
             >
               주문 상품
@@ -148,11 +162,12 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
             {order.orderProducts.length === 0 ? (
               <div
                 style={{
-                  border: '1px dashed #d1d5db',
+                  border: '1px solid #ddd3ce',
                   borderRadius: '12px',
-                  padding: '20px',
+                  backgroundColor: '#ffffff',
+                  padding: '22px',
                   textAlign: 'center',
-                  color: '#6b7280',
+                  color: '#7b6d65',
                   fontSize: '14px',
                 }}
               >
@@ -162,8 +177,9 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               <div
                 style={{
                   overflow: 'hidden',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '12px',
+                  border: '1px solid #ddd3ce',
+                  borderRadius: '14px',
+                  backgroundColor: '#ffffff',
                 }}
               >
                 <table
@@ -173,7 +189,12 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                     fontSize: '14px',
                   }}
                 >
-                  <thead style={{ backgroundColor: '#f9fafb' }}>
+                  <thead
+                    style={{
+                      backgroundColor: '#eee7e3',
+                      color: '#5a4941',
+                    }}
+                  >
                     <tr>
                       <Th>orderId</Th>
                       <Th>productId</Th>
@@ -182,7 +203,13 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   </thead>
                   <tbody>
                     {order.orderProducts.map((item, index) => (
-                      <tr key={`${item.orderId}-${item.productId}-${index}`}>
+                      <tr
+                        key={`${item.orderId}-${item.productId}-${index}`}
+                        style={{
+                          borderTop: '1px solid #f0e7e2',
+                          color: '#2d2d2d',
+                        }}
+                      >
                         <Td>{item.orderId}</Td>
                         <Td>{item.productId}</Td>
                         <Td>{item.quantity}</Td>
@@ -200,13 +227,20 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
   );
 }
 
-function InfoCard({ label, value }: { label: string; value: string }) {
+interface InfoCardProps {
+  label: string;
+  value: string;
+  fullWidth?: boolean;
+}
+
+function InfoCard({ label, value, fullWidth = false }: InfoCardProps) {
   return (
     <div
       style={{
-        border: '1px solid #e5e7eb',
+        width: fullWidth ? '100%' : undefined,
         borderRadius: '12px',
-        backgroundColor: '#f9fafb',
+        backgroundColor: '#ffffff',
+        border: '1px solid #ddd3ce',
         padding: '16px',
       }}
     >
@@ -214,17 +248,20 @@ function InfoCard({ label, value }: { label: string; value: string }) {
         style={{
           margin: 0,
           fontSize: '12px',
-          fontWeight: 600,
-          color: '#6b7280',
+          fontWeight: 700,
+          color: '#9b8b82',
+          textTransform: 'uppercase',
+          letterSpacing: '0.12em',
         }}
       >
         {label}
       </p>
       <p
         style={{
-          margin: '8px 0 0 0',
-          fontSize: '14px',
-          color: '#111827',
+          margin: '10px 0 0 0',
+          fontSize: '15px',
+          fontWeight: 600,
+          color: '#1f1f1f',
           wordBreak: 'break-all',
         }}
       >
@@ -239,10 +276,8 @@ function Th({ children }: { children: React.ReactNode }) {
     <th
       style={{
         textAlign: 'left',
-        padding: '12px 16px',
-        borderBottom: '1px solid #e5e7eb',
-        color: '#4b5563',
-        fontWeight: 600,
+        padding: '14px 16px',
+        fontWeight: 700,
       }}
     >
       {children}
@@ -254,9 +289,7 @@ function Td({ children }: { children: React.ReactNode }) {
   return (
     <td
       style={{
-        padding: '12px 16px',
-        borderBottom: '1px solid #e5e7eb',
-        color: '#111827',
+        padding: '14px 16px',
       }}
     >
       {children}

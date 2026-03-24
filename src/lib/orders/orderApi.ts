@@ -30,6 +30,23 @@ async function updateOrderStatusFromMock(orderId: number, status: OrderStatus): 
   return updatedOrder;
 }
 
+async function cancelOrderFromMock(orderId: number): Promise<Order> {
+  await delay(300);
+
+  const targetOrder = mockOrders.find((order) => order.id === orderId);
+
+  if (!targetOrder) {
+    throw new Error('주문을 찾을 수 없습니다.');
+  }
+
+  const cancelledOrder: Order = {
+    ...targetOrder,
+    status: 'CANCELLED',
+  };
+
+  return cancelledOrder;
+}
+
 async function getOrdersFromApi(): Promise<Order[]> {
   const response = await fetch('/api/v1/admin/orders', {
     method: 'GET',
@@ -60,6 +77,19 @@ async function updateOrderStatusFromApi(orderId: number, status: OrderStatus): P
   return result.data;
 }
 
+async function cancelOrderFromApi(orderId: number): Promise<Order> {
+  const response = await fetch(`/api/v1/admin/orders/${orderId}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error('주문 취소에 실패했습니다.');
+  }
+
+  const result: RsData<Order> = await response.json();
+  return result.data;
+}
+
 export async function getOrders(): Promise<Order[]> {
   try {
     if (USE_MOCK) {
@@ -79,6 +109,18 @@ export async function updateOrderStatus(orderId: number, status: OrderStatus): P
     }
 
     return await updateOrderStatusFromApi(orderId, status);
+  } catch (error) {
+    throw toAppError(error);
+  }
+}
+
+export async function cancelOrder(orderId: number): Promise<Order> {
+  try {
+    if (USE_MOCK) {
+      return await cancelOrderFromMock(orderId);
+    }
+
+    return await cancelOrderFromApi(orderId);
   } catch (error) {
     throw toAppError(error);
   }

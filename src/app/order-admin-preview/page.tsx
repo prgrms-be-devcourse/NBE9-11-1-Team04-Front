@@ -2,13 +2,44 @@ import OrderAdminTable from '@/components/order-admin/OrderAdminTable';
 
 export default function OrderAdminPreviewPage() {
   return (
-    <main className="min-h-screen bg-gray-100 px-4 py-8">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-6">
-          <p className="text-sm font-medium text-gray-500">Admin Preview</p>
-          <h1 className="mt-1 text-2xl font-bold text-gray-900">주문 관리 임시 화면</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            주문 상세 모달, 배송 상태 변경, 공통 에러 메시지를 미리 테스트하는 페이지입니다.
+    <main
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#4b2619',
+        padding: '48px 24px 80px',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}
+      >
+        <div
+          style={{
+            textAlign: 'center',
+            marginBottom: '40px',
+          }}
+        >
+          <h1
+            style={{
+              margin: 0,
+              fontSize: '56px',
+              fontWeight: 800,
+              color: '#ffffff',
+              lineHeight: 1.1,
+            }}
+          >
+            Coffee Order
+          </h1>
+          <p
+            style={{
+              margin: '12px 0 0 0',
+              fontSize: '24px',
+              color: '#e7d7cf',
+            }}
+          >
+            Admin Order Preview
           </p>
         </div>
 

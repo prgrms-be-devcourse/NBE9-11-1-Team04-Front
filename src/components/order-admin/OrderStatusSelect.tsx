@@ -4,26 +4,46 @@ import { ORDER_STATUS_LABELS, OrderStatus } from '@/types/order';
 
 interface OrderStatusSelectProps {
   value: OrderStatus;
+  onChange: (value: OrderStatus) => void;
   disabled?: boolean;
-  onChange: (nextStatus: OrderStatus) => void;
 }
 
-const ORDER_STATUS_OPTIONS: OrderStatus[] = ['PENDING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+const ORDER_STATUS_OPTIONS: OrderStatus[] = ['PENDING', 'SHIPPED', 'DELIVERED'];
 
 export default function OrderStatusSelect({
   value,
-  disabled = false,
   onChange,
+  disabled = false,
 }: OrderStatusSelectProps) {
   return (
     <select
-      value={value}
-      disabled={disabled}
+      value={value === 'CANCELLED' ? 'DELIVERED' : value}
       onChange={(event) => onChange(event.target.value as OrderStatus)}
-      className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-gray-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+      disabled={disabled}
+      style={{
+        width: '100%',
+        minWidth: '132px',
+        height: '38px',
+        borderRadius: '8px',
+        border: '1px solid #2f2f2f',
+        backgroundColor: disabled ? '#e5e7eb' : '#2f2f2f',
+        color: disabled ? '#6b7280' : '#ffffff',
+        padding: '0 12px',
+        fontSize: '13px',
+        fontWeight: 600,
+        outline: 'none',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+      }}
     >
       {ORDER_STATUS_OPTIONS.map((status) => (
-        <option key={status} value={status}>
+        <option
+          key={status}
+          value={status}
+          style={{
+            backgroundColor: '#ffffff',
+            color: '#111827',
+          }}
+        >
           {ORDER_STATUS_LABELS[status]}
         </option>
       ))}
