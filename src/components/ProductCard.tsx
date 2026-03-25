@@ -12,6 +12,7 @@ export default function ProductCard({ product,children }: { product: Product, ch
         <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
         <p className="text-lg font-bold text-gray-900">&#8361;{product.price}</p>
         <p className="text-xs text-gray-500">{product.description}</p>
+        <button></button>
       </div>
       
     </div>
