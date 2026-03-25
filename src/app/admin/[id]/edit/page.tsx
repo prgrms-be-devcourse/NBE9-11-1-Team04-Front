@@ -131,9 +131,9 @@ export default function AdminProductEditPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                상품명
-            </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            상품명
+          </label>
           <input
             name="name"
             value={product.name}
@@ -141,9 +141,9 @@ export default function AdminProductEditPage() {
             placeholder="상품명"
             className="w-full border border-gray-300 rounded-md px-4 py-3 outline-none"
           />
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                가격
-            </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            가격
+          </label>
           <input
             name="price"
             type="number"
@@ -152,22 +152,22 @@ export default function AdminProductEditPage() {
             placeholder="가격"
             className="w-full border border-gray-300 rounded-md px-4 py-3 outline-none"
           />
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                카테고리
-            </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            카테고리
+          </label>
           <select
             name="category"
             value={product.category}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-3 outline-none bg-white"
           >
-            <option value="COFFEE">커피</option>
-            <option value="TEA">차</option>
-            <option value="DESSERT">디저트</option>
+            <option value="NUTTY">고소한맛맛</option>
+            <option value="FRUITY">산미</option>
+            <option value="DECAF">디카페인</option>
           </select>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                상품 설명
-            </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            상품 설명
+          </label>
           <textarea
             name="description"
             value={product.description}
@@ -175,9 +175,9 @@ export default function AdminProductEditPage() {
             placeholder="상품 설명"
             className="w-full border border-gray-300 rounded-md px-4 py-3 outline-none min-h-[120px] resize-none"
           />
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                재고
-            </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            재고
+          </label>
           <input
             name="stock"
             type="number"
@@ -186,9 +186,9 @@ export default function AdminProductEditPage() {
             placeholder="재고"
             className="w-full border border-gray-300 rounded-md px-4 py-3 outline-none"
           />
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                이미지 URL
-            </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            이미지 URL
+          </label>
           <input
             name="imageUrl"
             value={product.imageUrl ?? ''}

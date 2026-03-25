@@ -3,6 +3,7 @@
 import { AdminProduct } from '@/types/adminProduct';
 import { useState } from 'react';
 
+
 export default function AdminSidebar({
   onCreate,
 }: {
@@ -11,7 +12,7 @@ export default function AdminSidebar({
   const [form, setForm] = useState({
     name: '',
     price: '',
-    category: 'COFFEE',
+    category: 'NUTTY',
     description: '',
     stock: '',
     imageUrl: '',
@@ -58,7 +59,7 @@ export default function AdminSidebar({
       setForm({
         name: '',
         price: '',
-        category: 'COFFEE',
+        category: 'NUTTY',
         description: '',
         stock: '',
         imageUrl: '',
@@ -119,9 +120,9 @@ export default function AdminSidebar({
           onChange={updateField}
           className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm outline-none focus:border-gray-400"
         >
-          <option value="COFFEE">커피</option>
-          <option value="TEA">차</option>
-          <option value="DESSERT">디저트</option>
+          <option value="NUTTY">고소한맛</option>
+          <option value="FRUITY">산미</option>
+          <option value="DECAF">디카페인</option>
         </select>
 
         <textarea
