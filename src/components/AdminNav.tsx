@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Coffee, ClipboardList, LogOut } from 'lucide-react';
+import { Coffee, ClipboardList, LogOut,Home } from 'lucide-react';
+
 
 export default function AdminNav() {
   // 현재 접속 중인 URL 경로를 가져옵니다.
@@ -45,12 +46,16 @@ export default function AdminNav() {
         })}
       </nav>
 
-      {/* 하단 유틸 영역 (로그아웃 등) */}
+      {/* 하단 유틸 영역 (메인으로 돌아가기) */}
       <div className="mt-12 pt-6 border-t border-[#4A362D]">
-        <button className="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-all w-full text-left rounded-md hover:bg-[#4A362D]">
-          <LogOut className="w-5 h-5" />
-          주문 페이지로
-        </button>
+        {/* 💡 button 대신 Link 컴포넌트를 사용하고 href="/" 를 줍니다. */}
+        <Link 
+          href="/"
+          className="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-all w-full text-left rounded-md hover:bg-[#4A362D]"
+        >
+          <Home className="w-5 h-5" />
+          메인으로 돌아가기
+        </Link>
       </div>
     </div>
   );
