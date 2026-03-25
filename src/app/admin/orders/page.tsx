@@ -21,14 +21,14 @@ export default function AdminOrdersPage() {
   // 백엔드 API 호출 함수
   const fetchOrders = async () => {
     try {
-      let url = `http://localhost:8080/api/v1/admin/orders?page=${currentPage}&size=10`;
+      let url = `${process.env.NEXT_PUBLIC_BASEURL}/admin/orders?page=${currentPage}&size=10`;
 
       if (searchUserId) {
         // 유저 별 조회
-        url = `http://localhost:8080/api/v1/admin/orders/user/${searchUserId}?page=${currentPage}&size=10`;
+        url = `${process.env.NEXT_PUBLIC_BASEURL}/admin/orders/user/${searchUserId}?page=${currentPage}&size=10`;
       } else if (startDate && endDate) {
         // 기간 별 조회
-        url = `http://localhost:8080/api/v1/admin/orders/period?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=10`;
+        url = `${process.env.NEXT_PUBLIC_BASEURL}/admin/orders/period?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=10`;
       }
 
       const res = await fetch(url);
@@ -55,7 +55,7 @@ export default function AdminOrdersPage() {
     fetchOrders();
   }, [currentPage]);
 
-  // 💡 검색 버튼 클릭 핸들러 (유효성 검사 및 방어 로직)
+  // 검색 버튼 클릭 핸들러 (유효성 검사 및 방어 로직)
   const handleSearch = () => {
     if (searchUserId && (startDate || endDate)) {
       alert('유저 별 조회와 기간 별 조회를 동시에 할 수는 없습니다. 하나의 조건만 입력해 주세요.');
@@ -74,7 +74,7 @@ export default function AdminOrdersPage() {
     else setCurrentPage(0);
   };
 
-  // 💡 필터 초기화 핸들러
+  // 필터 초기화 핸들러
   const handleReset = () => {
     setStartDate('');
     setEndDate('');
