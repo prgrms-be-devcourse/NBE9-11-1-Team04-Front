@@ -78,7 +78,7 @@ export default function AdminOrderTable({
             <thead>
               <tr className="border-b-2 border-gray-100">
                 <th className="pb-4 font-semibold text-gray-900 text-sm">주문 번호</th>
-                <th className="pb-4 font-semibold text-gray-900 text-sm">유저 ID</th>
+                <th className="pb-4 font-semibold text-gray-900 text-sm">주문자 정보</th>
                 <th className="pb-4 font-semibold text-gray-900 text-sm">결제 금액</th>
                 <th className="pb-4 font-semibold text-gray-900 text-sm">주문 일시</th>
                 <th className="pb-4 font-semibold text-gray-900 text-sm">상태</th>
@@ -104,7 +104,10 @@ export default function AdminOrderTable({
                       className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                     >
                       <td className="py-4 font-medium text-gray-900">#{order.id}</td>
-                      <td className="py-4 text-gray-600">{order.userId}</td>
+                      <td className="py-4 text-gray-600">
+                        <div className="font-medium text-gray-900">{order.email}</div>
+                        <div className="text-xs text-gray-500">ID: {order.userId}</div>
+                      </td>
                       <td className="py-4 font-bold text-gray-900">
                         {order.totalPrice.toLocaleString()}원
                       </td>
