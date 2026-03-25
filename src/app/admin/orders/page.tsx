@@ -13,23 +13,34 @@ export default function AdminOrdersPage() {
   const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 (0부터 시작)
   const [totalPages, setTotalPages] = useState(0);   // 전체 페이지 수
 
+  // 필터링 상태
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [searchUserId, setSearchUserId] = useState('');
+
   // 백엔드 API 호출 함수
   const fetchOrders = async () => {
     try {
-      //백엔드 주문 목록 조회 API 엔드포인트, URL에 파라미터 추가 & 전체 페이지 수 저장
-      const res = await fetch(`http://localhost:8080/api/v1/admin/orders?page=${currentPage}&size=10`);
-      
+      let url = `http://localhost:8080/api/v1/admin/orders?page=${currentPage}&size=10`;
+
+      if (searchUserId) {
+        // 유저 별 조회
+        url = `http://localhost:8080/api/v1/admin/orders/user/${searchUserId}?page=${currentPage}&size=10`;
+      } else if (startDate && endDate) {
+        // 기간 별 조회
+        url = `http://localhost:8080/api/v1/admin/orders/period?startDate=${startDate}&endDate=${endDate}&page=${currentPage}&size=10`;
+      }
+
+      const res = await fetch(url);
+
       if (!res.ok) {
         throw new Error('주문 목록을 불러오는데 실패했습니다.');
       }
 
-      // RsData -> PageResponseDto -> OrderDto 계층 구조를 타입으로 명시
       const result: RsData<PageResponseDto<OrderDto>> = await res.json();
-      
-      // 페이징 DTO 안의 'content' 배열추출출
+
       setOrders(result.data.content);
-      // 전체 페이지 수도 상태에 저장
-      setTotalPages(result.data.totalPages); 
+      setTotalPages(result.data.totalPages);
       
     } catch (err) {
       console.error('API Fetch 에러:', err);
@@ -43,6 +54,36 @@ export default function AdminOrdersPage() {
   useEffect(() => {
     fetchOrders();
   }, [currentPage]);
+
+  // 💡 검색 버튼 클릭 핸들러 (유효성 검사 및 방어 로직)
+  const handleSearch = () => {
+    if (searchUserId && (startDate || endDate)) {
+      alert('유저 별 조회와 기간 별 조회를 동시에 할 수는 없습니다. 하나의 조건만 입력해 주세요.');
+      return;
+    }
+    if ((startDate && !endDate) || (!startDate && endDate)) {
+      alert('검색할 시작일과 종료일을 모두 선택해 주세요.');
+      return;
+    }
+    if (startDate && endDate && startDate > endDate) {
+      alert('시작일은 종료일보다 이전이어야 합니다.');
+      return;
+    }
+
+    if (currentPage === 0) fetchOrders();
+    else setCurrentPage(0);
+  };
+
+  // 💡 필터 초기화 핸들러
+  const handleReset = () => {
+    setStartDate('');
+    setEndDate('');
+    setSearchUserId('');
+    setCurrentPage(0);
+    setTimeout(() => {
+      fetchOrders();
+    }, 0);
+  };
 
   const handlePrevPage = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
@@ -62,10 +103,63 @@ export default function AdminOrdersPage() {
 
         {/* 우측 메인 콘텐츠 */}
         <div className="lg:col-span-3 space-y-6">
-          <div className="flex items-center justify-between bg-[#3D2B24] p-4 rounded-lg">
+          <div className="bg-[#3D2B24] p-5 rounded-lg flex flex-col gap-4">
+            {/* 상단: 타이틀 영역 */}
             <div>
               <h1 className="text-xl font-bold text-white">주문 관리 내역</h1>
-              <p className="text-sm text-gray-400 mt-1">고객들의 주문 상태를 확인합니다.</p>
+              <p className="text-sm text-gray-400 mt-1">고객들의 주문 상태를 확인하고 필터링합니다.</p>
+            </div>
+
+            {/* 하단: 필터 입력 영역 */}
+            <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-[#4A362D]">
+              
+              {/*유저 ID 검색 */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-300">유저 ID</span>
+                <input
+                  type="number"
+                  placeholder="예: 101"
+                  value={searchUserId}
+                  onChange={(e) => setSearchUserId(e.target.value)}
+                  className="bg-white px-3 py-1.5 rounded-md text-sm outline-none text-gray-900 w-24"
+                />
+              </div>
+
+              {/* 데스크탑에서만 보이는 세로 구분선 */}
+              <div className="hidden sm:block w-px h-5 bg-[#4A362D]"></div>
+
+              {/* 기간 검색 */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-300">조회 기간</span>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="bg-white px-2 py-1.5 rounded-md text-sm outline-none text-gray-900"
+                />
+                <span className="text-gray-400">~</span>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="bg-white px-2 py-1.5 rounded-md text-sm outline-none text-gray-900"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 sm:ml-auto w-full sm:w-auto justify-end">
+                <button
+                  onClick={handleReset}
+                  className="px-3 py-1.5 text-sm font-medium text-gray-300 hover:text-white transition-colors underline underline-offset-2"
+                >
+                  초기화
+                </button>
+                <button
+                  onClick={handleSearch}
+                  className="px-5 py-1.5 bg-white text-[#2D1B14] text-sm font-bold rounded-md hover:bg-gray-200 transition-colors shadow-sm"
+                >
+                  조회
+                </button>
+              </div>
             </div>
           </div>
 
@@ -83,7 +177,7 @@ export default function AdminOrdersPage() {
               {/* 테이블 컴포넌트 */}
               <AdminOrderTable orders={orders} />
 
-              {/* 💡 5. 페이징 컨트롤 UI (테이블 하단) */}
+              {/* 페이징 컨트롤 UI (테이블 하단) */}
               {totalPages > 0 && (
                 <div className="flex justify-center items-center space-x-4 mt-6">
                   <button
