@@ -18,7 +18,6 @@ async function getProducts(): Promise<Product[]> {
 
 export default async function HomePage() {
   const [products] = await Promise.all([getProducts()]);
-  
   return (
     <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
       {/* quantity를 useState로 함께 관리하기 위해 client 페이지 추가 */}
