@@ -1,7 +1,9 @@
 import ProductGrid from '@/components/ProductGrid';
+import ProductWrapper from '@/components/ProductWrapper';
 import Sidebar from '@/components/Sidebar';
 import { Product, CartItem } from '@/types/product';
-
+import { ProductDto } from '@/types/product';
+import { env } from 'process';
 async function getProducts(): Promise<Product[]> {
   // 백엔드 연결 전 테스트 데이터 (category 포함)
   return [
@@ -14,30 +16,13 @@ async function getProducts(): Promise<Product[]> {
   ];
 }
 
-async function getMenuItems(): Promise<CartItem[]> {
-  return [
-    { id: 101, label: 'Menu Label', description: 'Menu description.', iconType: 'tag', initialQuantity: 1 },
-    { id: 102, label: 'Menu Label', description: 'Menu description.', iconType: 'tag', initialQuantity: 3 },
-    { id: 103, label: 'Menu Label', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
-    { id: 104, label: 'Menu Label', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
-    { id: 105, label: 'Menu Label', description: 'Menu description.', iconType: 'star', initialQuantity: 0 },
-  ];
-}
-
 export default async function HomePage() {
-  const [products, menuItems] = await Promise.all([getProducts(), getMenuItems()]);
-
+  const [products] = await Promise.all([getProducts()]);
+  
   return (
     <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* 카테고리 탭과 상품 그리드가 합쳐진 컴포넌트 */}
-        <ProductGrid initialProducts={products} />
-
-        {/* 사이드바 */}
-        <aside className="lg:col-span-1">
-          <Sidebar items={menuItems} />
-        </aside>
-      </div>
+      {/* quantity를 useState로 함께 관리하기 위해 client 페이지 추가 */}
+      <ProductWrapper products={products}></ProductWrapper>
     </main>
   );
 }

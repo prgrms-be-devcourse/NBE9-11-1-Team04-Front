@@ -1,6 +1,6 @@
 import { Product } from '@/types/product';
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product,children }: { product: Product, children?: React.ReactNode; }) {
   return (
     <div className="bg-white rounded-lg p-4 shadow-sm h-fit">
       <div className="bg-gray-200 aspect-square rounded-md mb-4 flex items-center justify-center">
@@ -13,6 +13,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <p className="text-lg font-bold text-gray-900">${product.price}</p>
         <p className="text-xs text-gray-500">{product.description}</p>
       </div>
+      
     </div>
   );
 }
