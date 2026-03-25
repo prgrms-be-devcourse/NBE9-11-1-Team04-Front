@@ -34,7 +34,7 @@ export default function AdminProductCard({
 
           <div className="mt-3 flex justify-end gap-2">
             <Link
-              href={`/admin/products/${adminProduct.id}/edit`}
+              href={`/admin/${adminProduct.id}/edit`}
               className="rounded-md p-2 text-gray-700 hover:bg-gray-100"
             >
               <Pencil className="w-4 h-4" />
