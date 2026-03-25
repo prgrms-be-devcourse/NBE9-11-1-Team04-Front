@@ -2,6 +2,7 @@
 
 import AdminProductGrid from '@/components/AdminProductGrid';
 import AdminSidebar from '@/components/AdminSidebar';
+import AdminNav from '@/components/AdminNav';
 import { AdminProduct } from '@/types/adminProduct';
 import { useEffect, useState } from 'react';
 
@@ -52,7 +53,12 @@ export default function AdminPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center">
+    <main className="min-h-screen bg-[#2D1B14] p-6 md:p-12 flex justify-center gap-8">
+      {/* 좌측 네비게이션 */}
+        <aside className="lg:col-span-1">
+          <AdminNav />
+        </aside>
+
       <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         <AdminProductGrid 
         initialProducts={adminProducts} 
