@@ -4,7 +4,7 @@ import { CheckCircle2, Ticket, ArrowLeft } from 'lucide-react';
 import { Tag } from 'lucide-react';
 export default function OrderComplete({ orderData, onBackToMain }: any) {
     return (
-        <div className="fixed inset-0 z-50 bg-[#2D1B14] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-[#2D2423] flex items-center justify-center p-4">
             <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl shadow-black/5 overflow-hidden border border-[#E5E0DD]">
                 <div className="p-10 text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-50 rounded-full mb-6">
@@ -23,13 +23,13 @@ export default function OrderComplete({ orderData, onBackToMain }: any) {
                                         </div>
                                         <span className="font-bold text-gray-800 text-sm">{p.name} <span className="text-gray-400 font-medium ml-1">x{p.quantity}</span></span>
                                     </div>
-                                    <span className="font-bold text-gray-900 text-sm">&#8361;{(p.price * p.quantity).toLocaleString()}</span>
+                                    <span className="font-bold text-gray-900 text-sm">&#8361; {(p.price * p.quantity).toLocaleString()}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="pt-4 flex justify-between items-center border-t border-gray-200 mt-2">
                             <span className="text-sm font-bold text-gray-500">Total Price</span>
-                            <span className="text-2xl font-black text-gray-950">&#8361;{orderData.totalPrice.toLocaleString()}</span>
+                            <span className="text-2xl font-black text-gray-950">&#8361; {orderData.totalPrice.toLocaleString()}</span>
                         </div>
                     </div>
 

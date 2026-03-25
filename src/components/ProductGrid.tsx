@@ -6,7 +6,8 @@ import ProductCard from './ProductCard';
 
 const TABS: (CategoryType | 'ALL')[] = ['ALL', 'COFFEE', 'TEA', 'DESSERT'];
 
-export default function ProductGrid({ initialProducts , onProductClick}: { initialProducts: Product[], onProductClick: (product: Product) => void }) {
+export default function ProductGrid({ initialProducts, onProductClick, onAddToCart }:
+    { initialProducts: Product[], onProductClick: (product: Product) => void, onAddToCart: (product: Product) => void }) {
     // 1. 상태 선언 (초기값 'ALL')
     const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'ALL'>('ALL');
 
@@ -36,9 +37,12 @@ export default function ProductGrid({ initialProducts , onProductClick}: { initi
             {/* 상품 목록 그리드 (필터링된 배열 사용) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 h-fit">
                 {filteredProducts.map((product) => (
-                    <div key={product.id} onClick={() => onProductClick(product)} className="cursor-pointer">
-                        <ProductCard product={product} />
-                    </div>                    
+                    <ProductCard
+                        key={product.id}
+                        product={product}
+                        onProductClick={onProductClick} // 상세 페이지 이동
+                        onAddToCart={onAddToCart}   // 장바구니 관리
+                    />
                 ))}
             </div>
         </div>
