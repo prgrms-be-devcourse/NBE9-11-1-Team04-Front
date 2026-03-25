@@ -1,4 +1,4 @@
-export type CategoryType = 'COFFEE' | 'TEA' | 'DESSERT';
+export type CategoryType = 'NUTTY' | 'FRUITY' | 'DECAF';
 
 export interface Product {
     id: number;
@@ -17,9 +17,9 @@ export interface UserInfo {
 // 화면 표시용 한글 매핑 객체
 export const CATEGORY_LABELS: Record<CategoryType | 'ALL', string> = {
     ALL: '전체',
-    COFFEE: '커피',
-    TEA: '차',
-    DESSERT: '디저트',
+    NUTTY: '커피',
+    FRUITY: '차',
+    DECAF: '디저트',
 };
 
 export interface CartItem {

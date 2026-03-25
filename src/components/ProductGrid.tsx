@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Product, CategoryType, CATEGORY_LABELS } from '@/types/product';
 import ProductCard from './ProductCard';
 
-const TABS: (CategoryType | 'ALL')[] = ['ALL', 'COFFEE', 'TEA', 'DESSERT'];
+const TABS: (CategoryType | 'ALL')[] = ['ALL', 'NUTTY', 'FRUITY', 'DECAF'];
 
 export default function ProductGrid({ initialProducts, onProductClick, onAddToCart }:
     { initialProducts: Product[], onProductClick: (product: Product) => void, onAddToCart: (product: Product) => void }) {
@@ -25,8 +25,8 @@ export default function ProductGrid({ initialProducts, onProductClick, onAddToCa
                         key={tab}
                         onClick={() => setSelectedCategory(tab)} // 클릭 시 상태 업데이트
                         className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${selectedCategory === tab
-                                ? 'bg-white text-gray-900 shadow-sm'
-                                : 'text-gray-400 hover:text-white'
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-400 hover:text-white'
                             }`}
                     >
                         {CATEGORY_LABELS[tab]}
