@@ -23,13 +23,13 @@ export default function OrderComplete({ orderData, onBackToMain }: any) {
                                         </div>
                                         <span className="font-bold text-gray-800 text-sm">{p.name} <span className="text-gray-400 font-medium ml-1">x{p.quantity}</span></span>
                                     </div>
-                                    <span className="font-bold text-gray-900 text-sm">${(p.price * p.quantity).toLocaleString()}</span>
+                                    <span className="font-bold text-gray-900 text-sm">&#8361;{(p.price * p.quantity).toLocaleString()}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="pt-4 flex justify-between items-center border-t border-gray-200 mt-2">
                             <span className="text-sm font-bold text-gray-500">Total Price</span>
-                            <span className="text-2xl font-black text-gray-950">${orderData.totalPrice.toLocaleString()}</span>
+                            <span className="text-2xl font-black text-gray-950">&#8361;{orderData.totalPrice.toLocaleString()}</span>
                         </div>
                     </div>
 

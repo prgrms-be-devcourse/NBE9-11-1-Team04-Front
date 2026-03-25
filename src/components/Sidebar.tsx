@@ -125,7 +125,7 @@ export default function Sidebar({ items, quantities, updateQty, onSuccess }:
                       <div>
                         <p className="text-sm font-medium text-gray-900">{item.name}</p>
                         <p className="text-xs text-gray-500">{item.description}</p>
-                        <p className="text-xs font-bold text-gray-700">${item.price}</p>
+                        <p className="text-xs font-bold text-gray-700">&#8361;{item.price}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 border rounded-md px-1 py-0.5">
@@ -140,7 +140,7 @@ export default function Sidebar({ items, quantities, updateQty, onSuccess }:
                   </div>
                 ))
               )} 
-              <div className=" text-xl font-bold text-gray-900  mt-3">${totalPrice}</div>
+              <div className=" text-xl font-bold text-gray-900  mt-3">&#8361;{totalPrice}</div>
             </div>
           </div>
           <div className="p-4">
