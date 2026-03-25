@@ -21,6 +21,21 @@ export interface Order {
   orderProducts: OrderProduct[];
 }
 
+export type OrderDto = Order;
+
+export interface PageResponseDto<T> {
+  content: T[];
+  totalPages: number;
+  totalElements?: number;
+  size?: number;
+  number?: number;
+}
+
+export interface OrderListParams {
+  page?: number;
+  size?: number;
+}
+
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   PENDING: '주문 대기',
   SHIPPED: '배송중',

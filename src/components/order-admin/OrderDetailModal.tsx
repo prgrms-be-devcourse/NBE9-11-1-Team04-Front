@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ORDER_STATUS_LABELS, Order } from '@/types/order';
 
@@ -10,21 +10,18 @@ interface OrderDetailModalProps {
 }
 
 export default function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const portalTarget = typeof document !== 'undefined' ? document.body : null;
 
   useEffect(() => {
-    setMounted(true);
-
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      setMounted(false);
     };
   }, []);
 
-  if (!mounted) {
+  if (!portalTarget) {
     return null;
   }
 
@@ -223,7 +220,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
         </div>
       </div>
     </div>,
-    document.body
+    portalTarget
   );
 }
 

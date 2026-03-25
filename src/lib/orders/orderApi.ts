@@ -1,16 +1,36 @@
 import { toAppError } from '@/lib/errors/appError';
 import { mockOrders } from '@/lib/orders/mockOrders';
-import { Order, OrderStatus, RsData } from '@/types/order';
+import {
+  Order,
+  OrderListParams,
+  OrderStatus,
+  PageResponseDto,
+  RsData,
+} from '@/types/order';
 
-const USE_MOCK = true;
+const USE_MOCK = false;
+const API_BASE_URL = 'http://localhost:8080';
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function getOrdersFromMock(): Promise<Order[]> {
+async function getOrdersPageFromMock({
+  page = 0,
+  size = 10,
+}: OrderListParams = {}): Promise<PageResponseDto<Order>> {
   await delay(300);
-  return mockOrders;
+
+  const startIndex = page * size;
+  const endIndex = startIndex + size;
+
+  return {
+    content: mockOrders.slice(startIndex, endIndex),
+    totalPages: Math.ceil(mockOrders.length / size),
+    totalElements: mockOrders.length,
+    size,
+    number: page,
+  };
 }
 
 async function updateOrderStatusFromMock(orderId: number, status: OrderStatus): Promise<Order> {
@@ -22,12 +42,10 @@ async function updateOrderStatusFromMock(orderId: number, status: OrderStatus): 
     throw new Error('주문을 찾을 수 없습니다.');
   }
 
-  const updatedOrder: Order = {
+  return {
     ...targetOrder,
     status,
   };
-
-  return updatedOrder;
 }
 
 async function cancelOrderFromMock(orderId: number): Promise<Order> {
@@ -39,16 +57,17 @@ async function cancelOrderFromMock(orderId: number): Promise<Order> {
     throw new Error('주문을 찾을 수 없습니다.');
   }
 
-  const cancelledOrder: Order = {
+  return {
     ...targetOrder,
     status: 'CANCELLED',
   };
-
-  return cancelledOrder;
 }
 
-async function getOrdersFromApi(): Promise<Order[]> {
-  const response = await fetch('/api/v1/admin/orders', {
+async function getOrdersPageFromApi({
+  page = 0,
+  size = 10,
+}: OrderListParams = {}): Promise<PageResponseDto<Order>> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/admin/orders?page=${page}&size=${size}`, {
     method: 'GET',
   });
 
@@ -56,12 +75,12 @@ async function getOrdersFromApi(): Promise<Order[]> {
     throw new Error('주문 목록 조회에 실패했습니다.');
   }
 
-  const result: RsData<Order[]> = await response.json();
+  const result: RsData<PageResponseDto<Order>> = await response.json();
   return result.data;
 }
 
 async function updateOrderStatusFromApi(orderId: number, status: OrderStatus): Promise<Order> {
-  const response = await fetch(`/api/v1/admin/orders/${orderId}`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/admin/orders/${orderId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -78,7 +97,7 @@ async function updateOrderStatusFromApi(orderId: number, status: OrderStatus): P
 }
 
 async function cancelOrderFromApi(orderId: number): Promise<Order> {
-  const response = await fetch(`/api/v1/admin/orders/${orderId}`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/admin/orders/${orderId}`, {
     method: 'DELETE',
   });
 
@@ -90,16 +109,23 @@ async function cancelOrderFromApi(orderId: number): Promise<Order> {
   return result.data;
 }
 
-export async function getOrders(): Promise<Order[]> {
+export async function getOrdersPage(
+  params: OrderListParams = {}
+): Promise<PageResponseDto<Order>> {
   try {
     if (USE_MOCK) {
-      return await getOrdersFromMock();
+      return await getOrdersPageFromMock(params);
     }
 
-    return await getOrdersFromApi();
+    return await getOrdersPageFromApi(params);
   } catch (error) {
     throw toAppError(error);
   }
+}
+
+export async function getOrders(params: OrderListParams = {}): Promise<Order[]> {
+  const result = await getOrdersPage(params);
+  return result.content;
 }
 
 export async function updateOrderStatus(orderId: number, status: OrderStatus): Promise<Order> {
