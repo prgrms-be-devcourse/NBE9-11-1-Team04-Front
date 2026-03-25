@@ -4,10 +4,11 @@ import { useState } from 'react';
 import ProductGrid from './ProductGrid';
 import Sidebar from './Sidebar';
 import { Product } from '@/types/product';
+import OrderComplete from './OrderComplete';
 
 export default function ProductWrapper({ products }: { products: Product[] }) {
     const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
-
+    const [completedOrder, setCompletedOrder] = useState<any>(null);
     // 상품 클릭 관리 -> 클릭한 product id를 전달
     const handleProductClick = (product: Product) => { 
         setQuantities(prev => ({
@@ -23,7 +24,19 @@ export default function ProductWrapper({ products }: { products: Product[] }) {
             [id]: Math.max(0, (prev[id] || 0) + delta)
         }));
     };
+    // 주문 완료된 데이터 -> 완료시 주문 완료 화면 반환
+    const handleSuccess = (orderData: any) => {
+        setCompletedOrder(orderData);
+    };
 
+    const handleReset = () => {
+        setCompletedOrder(null);
+        setQuantities({});
+    };
+
+    if (completedOrder) {
+        return <OrderComplete orderData={completedOrder} onBackToMain={handleReset} />;
+    }
     return (
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* 클릭 함수 전달 */}
@@ -31,7 +44,7 @@ export default function ProductWrapper({ products }: { products: Product[] }) {
 
             <aside className="lg:col-span-1">
                 {/* 현재 수량과 수량 관리 함수 전달 */}
-                <Sidebar items={products} quantities={quantities} updateQty={updateQty} />
+                <Sidebar items={products} quantities={quantities} updateQty={updateQty} onSuccess={handleSuccess} />
             </aside>
         </div>
     );
