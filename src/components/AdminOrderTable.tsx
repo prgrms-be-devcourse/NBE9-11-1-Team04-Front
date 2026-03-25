@@ -109,13 +109,15 @@ export default function AdminOrderTable({
                         {order.totalPrice.toLocaleString()}원
                       </td>
                       <td className="py-4 text-gray-500 text-xs">
-                        {new Date(order.ordered_at).toLocaleString('ko-KR', {
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
+                        {order.orderedAt
+                          ? new Date(order.orderedAt).toLocaleString('ko-KR', {
+                              year: 'numeric',
+                              month: '2-digit',
+                              day: '2-digit',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })
+                          : '-'}
                       </td>
                       <td className="py-4">
                         <div className="flex flex-col gap-2">
@@ -130,7 +132,7 @@ export default function AdminOrderTable({
                                     : 'bg-green-100 text-green-700'
                             }`}
                           >
-                            {ORDER_STATUS_LABELS[order.status]}
+                            {ORDER_STATUS_LABELS[order.status] ?? order.status}
                           </span>
 
                           {isCancelled ? (

@@ -136,12 +136,20 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
           >
             <InfoCard label="주문 ID" value={String(order.id)} />
             <InfoCard label="회원 ID" value={String(order.userId)} />
-            <InfoCard label="주문 상태" value={ORDER_STATUS_LABELS[order.status]} />
+            <InfoCard label="주문 상태" value={ORDER_STATUS_LABELS[order.status] ?? order.status} />
             <InfoCard label="총 금액" value={`${order.totalPrice.toLocaleString()}원`} />
           </div>
 
           <div style={{ marginTop: '14px' }}>
-            <InfoCard label="주문 일시" value={order.ordered_at} fullWidth />
+            <InfoCard label="이메일" value={order.email || '-'} fullWidth />
+          </div>
+
+          <div style={{ marginTop: '14px' }}>
+            <InfoCard label="주소" value={order.address || '-'} fullWidth />
+          </div>
+
+          <div style={{ marginTop: '14px' }}>
+            <InfoCard label="주문 일시" value={order.orderedAt || '-'} fullWidth />
           </div>
 
           <section style={{ marginTop: '28px' }}>
@@ -156,7 +164,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               주문 상품
             </h3>
 
-            {order.orderProducts.length === 0 ? (
+            {!order.orderProducts || order.orderProducts.length === 0 ? (
               <div
                 style={{
                   border: '1px solid #ddd3ce',
@@ -194,22 +202,22 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   >
                     <tr>
                       <Th>orderId</Th>
-                      <Th>productId</Th>
+                      <Th>productName</Th>
                       <Th>quantity</Th>
                     </tr>
                   </thead>
                   <tbody>
                     {order.orderProducts.map((item, index) => (
                       <tr
-                        key={`${item.orderId}-${item.productId}-${index}`}
+                        key={`${item.productId}-${index}`}
                         style={{
                           borderTop: '1px solid #f0e7e2',
                           color: '#2d2d2d',
                         }}
                       >
-                        <Td>{item.orderId}</Td>
-                        <Td>{item.productId}</Td>
-                        <Td>{item.quantity}</Td>
+                        <Td>{order.id}</Td>
+                        <Td>{item.productName || '-'}</Td>
+                        <Td>{item.quantity ?? 0}</Td>
                       </tr>
                     ))}
                   </tbody>

@@ -28,8 +28,8 @@ export default function AdminOrdersPage() {
           size: PAGE_SIZE,
         });
 
-        setOrders(result.content);
-        setTotalPages(result.totalPages);
+        setOrders(result.content ?? []);
+        setTotalPages(result.totalPages ?? 0);
       } catch (err) {
         console.error('Order fetch error:', err);
         setError(toAppError(err).message);

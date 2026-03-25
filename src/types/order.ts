@@ -7,16 +7,18 @@ export interface RsData<T> {
 }
 
 export interface OrderProduct {
-  orderId: number;
   productId: number;
+  productName: string;
   quantity: number;
 }
 
 export interface Order {
   id: number;
   userId: number;
+  email: string;
+  address: string;
   totalPrice: number;
-  ordered_at: string;
+  orderedAt: string;
   status: OrderStatus;
   orderProducts: OrderProduct[];
 }
@@ -25,7 +27,7 @@ export type OrderDto = Order;
 
 export interface PageResponseDto<T> {
   content: T[];
-  totalPages: number;
+  totalPages?: number;
   totalElements?: number;
   size?: number;
   number?: number;
