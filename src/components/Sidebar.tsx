@@ -69,7 +69,7 @@ export default function Sidebar({ items, quantities, updateQty, onSuccess }:
       // 요청 응답 객체
       const rsData = await response.json();
 
-      if (rsData.resultCode.startsWith("201")) {
+      if (rsData.resultCode.startsWith("201") || rsData.resultCode.startsWith("200")) {
         const rsUserId = rsData.data.user.id;
         console.log("유저 생성 성공! ID:", rsUserId);
         // Todo
@@ -94,7 +94,7 @@ export default function Sidebar({ items, quantities, updateQty, onSuccess }:
           // console.log(orderResponse);
         }
       } else {
-        alert(`실패!!!!!!!: ${rsData.msg}`);
+        alert(`에러 발생: ${rsData.msg}`);
       }
     } catch (error) {
       console.error("에러:", error);
@@ -139,7 +139,7 @@ export default function Sidebar({ items, quantities, updateQty, onSuccess }:
                     </div>
                   </div>
                 ))
-              )} 
+              )}
               <div className=" text-xl font-bold text-gray-900  mt-3">&#8361;{totalPrice}</div>
             </div>
           </div>
