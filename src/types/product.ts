@@ -17,9 +17,9 @@ export interface UserInfo {
 // 화면 표시용 한글 매핑 객체
 export const CATEGORY_LABELS: Record<CategoryType | 'ALL', string> = {
     ALL: '전체',
-    NUTTY: '커피',
-    FRUITY: '차',
-    DECAF: '디저트',
+    NUTTY: '고소한맛',
+    FRUITY: '산미',
+    DECAF: '디카페인',
 };
 
 export interface CartItem {
